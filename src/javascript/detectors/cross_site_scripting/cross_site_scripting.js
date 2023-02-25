@@ -4,47 +4,22 @@
  */
 
 // {fact rule=cross-site-scripting@v1.0 defects=1}
-var express = require('express')
-var app = express()
-
 function crossSiteScriptingNoncompliant() {
-    app.route('/user/:id')
-        .get((req, res) => {
-            var userId = req.params.id
-            var form = userId + `
-            <form method="POST" style="margin: 60px auto; width: 140px;">
-                <p><input name="username" type="text" /></p>
-                <p><input name="password" type="password" /></p>
-                <p><input value="Login" type="submit" /></p>
-            </form>
-            `
-            // Noncompliant: user input is not sanitized before use.
-            res.send(form)
-        })
+    let url = window.location.search.slice(1)
+    // Noncompliant: unsafe jQuery ajax request.
+    $.ajax({url: url, data: "Hello"})
 }
 // {/fact}
 
 
 // {fact rule=cross-site-scripting@v1.0 defects=0}
-var express = require('express')
-var app = express()
+const ESAPI = require('node-esapi')
 
 function crossSiteScriptingCompliant() {
-    app.route('/user/:id')
-        .get((req, res) => {
-            var userId = req.params.id
-            if(!userId.matches(/[0-9]/g)){
-                return false
-            }
-            var form = userId + `
-            <form method="POST" style="margin: 60px auto; width: 140px;">
-                <p><input name="username" type="text" /></p>
-                <p><input name="password" type="password" /></p>
-                <p><input value="Login" type="submit" /></p>
-            </form>
-            `
-            // Compliant: user input is sanitized before use.
-            res.send(form)
-        })
+    let url = $(location).attr('hash').slice(1)
+    // Compliant: url is sanitized before ajax call.
+    url = ESAPI.encoder().encodeForURL(url)
+    $.ajax(url)
 }
 // {/fact}
+

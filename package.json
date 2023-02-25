@@ -1,0 +1,23 @@
+{
+  "name": "amazon-codeguru-reviewer-javascript-detectors",
+  "version": "1.0.0",
+  "description": "Amazon CodeGuru Reviewer is an AWS service that uses program analysis and machine learning to detect potential defects that are difficult for developers to find and offers suggestions for improvement.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankit-amazon/amazon-codeguru-reviewer-javascript-detectors.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ankit-amazon/amazon-codeguru-reviewer-javascript-detectors/issues"
+  },
+  "homepage": "https://github.com/ankit-amazon/amazon-codeguru-reviewer-javascript-detectors#readme",
+  "dependencies": {
+    "node-esapi": "^0.0.1"
+  }
+}
