@@ -26,15 +26,18 @@ var path = require('path')
 function pathTraversalCompliant() {
     app.get('/products', (req, res) => {
         const basePath = '/data/product/images/'
-        var queryPath = req.query.path
-        // Compliant: user-supplied relative-path must be in allow-list.
-        if(queryPath.match(/^[a-z]+$/)) {
-            var targetPath = path.join(basePath, queryPath)
+        // Compliant: user-supplied relative-path is sanitized.
+        const queryPath = sanitizer(req.query.path)
+        if(queryPath) {
+            const targetPath = path.join(basePath, queryPath)
             retrieveProduct(targetPath)
             res.send('Here is your requested product!')
         }
         else
             res.send('Invalid product!')
     })
+}
+function sanitizer(path) {
+    return path.match(/^[a-z]+$/) ? path : null
 }
 // {/fact}
