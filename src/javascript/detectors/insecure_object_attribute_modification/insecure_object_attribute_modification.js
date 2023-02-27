@@ -22,8 +22,8 @@ var app = express()
 function insecureObjectAttributeModificationCompliant() {
     app.get('www.example.com', (req, res) => {
         var userId = req.params.id
-        // Compliant: before using external input as object property checked it explicitly for prototype pollution.
-        if (userId !== 'constructor' && userId !== '__proto__') {
+        // Compliant: Checks whether the property is directly owned by the object before modifying it.
+        if (req.session.user.hasOwnProperty(userId)) {
             req.session.user[userId] = req.body['userDetails']
         }
     });
