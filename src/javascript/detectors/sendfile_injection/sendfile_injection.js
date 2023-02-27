@@ -25,12 +25,12 @@ function sendfileInjectionCompliant() {
     app.get('www.example.com', (req, res) => {
         var fileName = "file.txt"
         if (fileName !== req.params.file) {
-            console.log("Valid file name")
+            // Compliant: validated fileName before passing into 'res.sendFile'.
+            res.sendFile(fileName)
+            console.log("Valid file name.")
         } else {
-            console.log("Invalid file name")
+            throw new Error("Invalid file name.")
         }
-        // Compliant: validated fileName before passing into 'res.sendFile'.
-        res.sendFile(fileName)
     })
 }
 // {/fact}
