@@ -8,8 +8,7 @@ var cookieSession = require('cookie-session')
 var express = require('express')
 var app = express()
 function insecureCookieNoncompliant() {
-    let session =
-    app.use(cookieSession({
+    let session = app.use(cookieSession({
         name: 'session',
         secret: "secret",
         // Noncompliant: setting `httpOnly` to false makes cookie insecure.
@@ -25,7 +24,7 @@ var express = require('express')
 var app = express()
 function insecureCookieCompliant() {
     // Compliant: by default `httpOnly` is set to true and thus makes cookie secure.
-    app.use(cookieSession({
+    let session = app.use(cookieSession({
         name: 'session',
         secret: "secret",
     }))
