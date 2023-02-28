@@ -14,7 +14,7 @@ function originsVerifiedCrossOriginCommunicationNoncompliant() {
 
 // {fact rule=origins-verified-cross-origin-communication@v1.0 defects=0}
 function originsVerifiedCrossOriginCommunicationCompliant() {
-    var iframe = document.getElementsByClassName(".testsecureiframe")
+    var iframe = document.getElementsByClassName(".testiframe")
     // Compliant: using secure origin.
     iframe.contentWindow.postMessage("secret_value", "https://secure.example.com")
 }
