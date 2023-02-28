@@ -20,6 +20,6 @@ var tmp = require('tmp')
 function insecureTempFileCompliant() {
     // Compliant: tmp library to securely create or read a temporary files.
    var tmp_obj = tmp.fileSync()
-   fs.readFileSync(tmp_obj, 'utf8')
+   fs.readFile(tmp_obj, 'utf8')
 }
 // {/fact}
