@@ -15,6 +15,7 @@ function insecureTempFileNoncompliant() {
 // {/fact}
 
 // {fact rule=insecure-temp-file@v1.0 defects=0}
+var fs = require('fs')
 var tmp = require('tmp')
 function insecureTempFileCompliant() {
     // Compliant: tmp library to securely create or read a temporary files.
