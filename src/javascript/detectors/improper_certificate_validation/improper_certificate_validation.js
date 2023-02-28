@@ -28,6 +28,7 @@ var fs = require("fs")
 
 function improperCertificateValidationCompliant() {
     var options = {
+        host: 'encrypted.example.com',
         // Compliant: certificate is provided.
         key: fs.readFileSync('keys/client-key.pem'),
         cert: fs.readFileSync('keys/client-cert.pem')
