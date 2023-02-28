@@ -31,7 +31,7 @@ var express = require("express")
 var app = express()
 function noSqlInjectionCompliant() {
     app.get('/api/getallusers', function (req, res){
-       var dobClient = new AWS.DynamoDB({apiVersion: '2012-08-10'})
+       var docClient = new AWS.DynamoDB.DocumentClient({region: "us-east-1"});
        // Compliant: should not use external input in `scan` API.
        var params = {
             TableName: "dynamodb-example-node",
