@@ -20,6 +20,6 @@ var fs = require('fs');
 function xmlExternalEntityCompliant() {
     const xml = fs.readFileSync("foo.xml");
     // Compliant: parsing of external entities is disabled by default.
-    const xmlDoc = libxmljs.parseXmlS(xml, {noblanks: true});
+    const xmlDoc = libxmljs.parseXmlS(xml, { noblanks: true });
 }
 // {/fact}
