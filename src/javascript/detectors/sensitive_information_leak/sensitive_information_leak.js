@@ -10,7 +10,7 @@ var app = express()
 function sensitiveInformationLeakNoncompliant(){
     app.use(
         helmet.referrerPolicy({
-            // Non-Compliant: sets the policy as no-referrer-when-downgrade.
+            // Noncompliant: sets the policy as no-referrer-when-downgrade.
             policy: 'no-referrer-when-downgrade'
         })
     )
