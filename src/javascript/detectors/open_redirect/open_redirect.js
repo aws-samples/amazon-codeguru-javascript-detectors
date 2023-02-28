@@ -8,7 +8,7 @@ var express = require('express')
 var app = express()
 
 function openRedirectNoncompliant() {
-    app.get('/usr/local/bin',function(req,res){
+    app.get('/users/:profileUrl',function(req,res){
         var url = req.params.url
         // Noncompliant: user input is used without sanitization.
         res.redirect(url)
@@ -23,7 +23,7 @@ var app = express()
 
 function openRedirectCompliant() {
     const safeurl = ['www.example.com']
-    app.post('/usr/local/bin',function(req,res){
+    app.post('/users/:profileUrl',function(req,res){
         var url = req.params.url
         if(safeurl.includes(url)){
             // Compliant: user input is sanitized before use.
