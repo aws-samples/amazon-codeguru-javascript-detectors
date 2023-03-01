@@ -18,12 +18,13 @@ function nonLiteralRegularExpressionNoncompliant() {
 
 // {fact rule=non-literal-regular-expression@v1.0 defects=0}
 var express = require('express')
+var escapeStringRegexp = require('escape-string-regexp')
 var app = express()
 function nonLiteralRegularExpressionCompliant() {
     app.get("www.example.com", (req, res) => {
         var re = new RegExp('ab+c')
-        // Compliant: hardcoded data passes into `test` for regex patterns.
-        var test = re.test('abccd')
+        // Compliant: sanitized user-controlled data passes into `test` for regex patterns.
+        var test = re.test(escapeStringRegexp(req.body.id))
     })
 }
 // {/fact}
