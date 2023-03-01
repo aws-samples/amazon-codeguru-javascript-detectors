@@ -22,8 +22,8 @@ var app = express()
 function insecureObjectAttributeModificationCompliant() {
     app.get('www.example.com', (req, res) => {
         var userId = req.params.id
-        // Compliant: Checks whether the property is directly owned by the object before modifying it.
-        if (req.session.user.hasOwnProperty(userId)) {
+        // Compliant: checks the type of userId as string.
+        if (typeof userId === 'string') {
             req.session.user[userId] = req.body['userDetails']
         }
     });
