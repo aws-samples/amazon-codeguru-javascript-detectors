@@ -10,7 +10,7 @@ var app = express()
 
 var connection = sql.createConnection({
     host     : 'localhost',
-    user     : 'newUserName',
+    user     : 'myUserName',
     password : 'myPass',
     database : 'myDatabase'
 })
