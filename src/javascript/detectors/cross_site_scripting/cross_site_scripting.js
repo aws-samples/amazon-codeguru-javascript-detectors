@@ -16,10 +16,10 @@ function crossSiteScriptingNoncompliant() {
 const ESAPI = require('node-esapi')
 
 function crossSiteScriptingCompliant() {
-    let url = $(location).attr('hash').slice(1)
+    let url = window.location.search.slice(1)
     // Compliant: url is sanitized before ajax call.
     url = ESAPI.encoder().encodeForURL(url)
-    $.ajax(url)
+    $.ajax({url: url, data: "Hello"})
 }
 // {/fact}
 
