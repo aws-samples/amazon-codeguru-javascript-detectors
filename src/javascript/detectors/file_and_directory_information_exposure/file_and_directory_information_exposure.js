@@ -8,10 +8,10 @@ var express = require('express')
 var serveStatic = require("serve-static")
 var app = express()
 
-function FileAndDirectoryInformationExposureNoncompliant()
+function fileAndDirectoryInformationExposureNoncompliant()
 {
     // Noncompliant: dotfiles variable is set to 'allow'.
-    var serveStaticMiddleware = serveStatic('public', { index : false, dotfiles : 'allow' })
+    var serveStaticMiddleware = serveStatic('public', { index: false, dotfiles: 'allow' })
     app.use(serveStaticMiddleware)
 }
 // {/fact}
@@ -21,7 +21,7 @@ var express = require('express')
 var serveStatic = require("serve-static")
 var app = express()
 
-function FileAndDirectoryInformationExposureCompliant(safeDomain)
+function fileAndDirectoryInformationExposureCompliant(safeDomain)
 {
     // Compliant: dotfiles variable is set to 'ignore'.
     var serveStaticMiddleware = serveStatic('public', { 'index': false, 'dotfiles': 'ignore' })
