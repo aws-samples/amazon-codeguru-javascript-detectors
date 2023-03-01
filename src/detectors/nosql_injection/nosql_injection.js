@@ -8,11 +8,11 @@ var AWS = require('aws-sdk')
 var express = require("express")
 var app = express()
 function noSqlInjectionNoncompliant() {
-    app.get(path, function(req,res) {
-        var dobClient = new AWS.DynamoDB({apiVersion: '2012-08-10'})
+    app.get('/api/getallusers', function(req,res) {
+        var docClient = new AWS.DynamoDB.DocumentClient({region: "us-east-1"});
         var params= req.body.params
         // Noncompliant: external user input can be vulnerable to injection attacks.
-        dobClient.query(params, function(err, data) {
+        docClient.scan(params, function(err, data) {
             if (err) {
                 console.log("Error", err)
             } else {
@@ -32,11 +32,11 @@ var app = express()
 function noSqlInjectionCompliant() {
     app.get('/api/getallusers', function (req, res){
        var docClient = new AWS.DynamoDB.DocumentClient({region: "us-east-1"});
-       // Compliant: should not use external input in `scan` API.
        var params = {
             TableName: "dynamodb-example-node",
             ProjectionExpression: "user_id, username, user_age",
        }
+       // Compliant: should not use external input in `scan` API.
        docClient.scan(params, function (err, data) {
             if (err) {
                 console.log(err)
