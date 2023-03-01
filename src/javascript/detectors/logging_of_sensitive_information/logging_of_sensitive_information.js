@@ -14,7 +14,7 @@ function loggingOfSensitiveInformationNoncompliant() {
         scope: 'custom',
         // Noncompliant: empty list is assigned to 'secrets'.
         secrets: []
-    };
+    }
 
     const logger = new Signale(options)
     logger.log('Secret is: ', info)
