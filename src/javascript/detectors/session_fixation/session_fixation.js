@@ -29,7 +29,7 @@ function sessionFixationCompliant() {
             // Compliant: session.regenerate is used
             req.session.regenerate((err) => {
             })
-            res.redirect('/')
+            res.redirect('/404')
         })
 }
 // {/fact}
