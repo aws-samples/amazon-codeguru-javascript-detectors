@@ -41,8 +41,8 @@ var connection = sql.createConnection({
 
 function sqlInjectionCompliant() {
     app.get("/user/:id", (req, res) => {
-        var query = "SELECT * FROM Employees WHERE ID = " + connection.escape(req.params.id)
         // Compliant: user input is sanitized before use.
+        var query = "SELECT * FROM Employees WHERE ID = " + connection.escape(req.params.id)
         connection.query(query, (error, results, fields) => {
             if (error) throw error
         })
