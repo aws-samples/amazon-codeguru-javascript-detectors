@@ -11,8 +11,8 @@ var app = express()
 function improperAccessControlNoncompliant(){
     app.use(
         helmet.permittedCrossDomainPolicies({
-            // Noncompliant: permittedPolicies is set to 'false'.
-            permittedPolicies: false,
+            // Noncompliant: permittedPolicies is set to 'all'.
+            permittedPolicies: "all",
         })
     )
 }
