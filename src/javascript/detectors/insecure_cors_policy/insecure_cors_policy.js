@@ -9,7 +9,7 @@ var app = express()
 function insecureCorsPolicyNoncompliant() {
     app.post('/users', function (req, res) {
         const origin = req.query.origin
-        // Noncompliant : the Access-Control-Allow-Origin header is set to user-controlled any domain.
+        // Noncompliant: the Access-Control-Allow-Origin header is set to user-controlled any domain.
         res.set(200, {'Access-Control-Allow-Origin': origin })
     })
 }
