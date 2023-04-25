@@ -6,7 +6,7 @@
 // {fact rule=weak-obfuscation-of-request@v1.0 defects=1}
 var jwt = require('jsonwebtoken')
 function weakObfuscationOfRequestNoncompliant() {
-    // Noncomplaint: secret is hardcoded.
+    // Noncompliant: secret is hardcoded.
     var secret = "secret"
     jwt.sign(payload, secret)
 }
@@ -16,7 +16,7 @@ function weakObfuscationOfRequestNoncompliant() {
 // {fact rule=weak-obfuscation-of-request@v1.0 defects=0}
 var jwt = require('jsonwebtoken')
 function weakObfuscationOfRequestCompliant() {
-    // Complaint: secret is properly loaded from environment variables.
+    // Compliant: secret is properly loaded from environment variables.
     var secret = process.env.JWT_TOKEN_SECRET
     jwt.sign(payload, secret)
 }
