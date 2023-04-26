@@ -28,7 +28,7 @@ A CodeGuru Reviewer GitHub Action workflow template has already been added to th
 
 You can copy the CodeGuru Reviewer GitHub Action `analyze.yml` that you made in the Setup step to your own personal repo.
 
-If you do not have GitHub Advanced Security, you will still be able to view your findings within the AWS Console. You can also use tools like `jq` within your workflow to postprocess the findings. If you print some of the findings to `stdout`, you will see them in your workflow's output log.
+If you do not have GitHub Advanced Security, you will still be able to view your findings within the AWS Console. You can also use tools like `jq` within your workflow to postprocess the findings. If you print some of the findings to stdout, you will see them in your workflow's output log.
 
 ## Getting Help
 
