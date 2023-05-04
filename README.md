@@ -1,12 +1,12 @@
 ## Amazon CodeGuru Reviewer JavaScript Detector Examples
 
-Amazon CodeGuru Reviewer is an AWS service that uses program analysis and machine learning to detect potential defects that are difficult for developers to find and offers suggestions for improvement. It is deliberately insecure tool maintained by [OWASP top 10 web application security risks](https://owasp.org/www-project-top-ten/) which is designed to teach application security lessons. This tool is a demonstration of common server-side application flaws. The exercises are intended to be used by people to learn about application security and penetration testing. When an issue is detected, a remediation recommendation and explanation is generated. This allows you to find and remediate issues before the code is deployed.
+Amazon CodeGuru Reviewer is an AWS service that uses program analysis and machine learning to detect potential defects that are difficult for developers to find and offers suggestions for improvement.
 
 CodeGuru Reviewer finds defects in Java, Python, and JavaScript code. For more information about how to set up and use CodeGuru Reviewer, see the [Amazon CodeGuru Reviewer User Guide](https://docs.aws.amazon.com/codeguru/latest/reviewer-ug/welcome.html).
 
 This repo demonstrates some of CodeGuru Reviewer's JavaScript detectors. For more descriptions of each detector, see our [Detector Library](https://docs.aws.amazon.com/codeguru/detector-library/index.html). You can also see the code example repos for [Java](https://github.com/aws-samples/amazon-codeguru-reviewer-java-detectors) and [Python](https://github.com/aws-samples/amazon-codeguru-reviewer-python-detectors).
 
-The security detectors are features in CodeGuru Reviewer for Java, Python and JavaScript applications. These detectors identify security vulnerabilities in your code by using logic-based reasoning of code using techniques from automated reasoning, a sub-discipline of AI.
+PLEASE NOTE: This repo is for demonstration purpose only. It is meant to educate people about 'security flaws'. The code examples contain vulnerable code and should not be used for real-word purposes.
 
 ## Try out the CodeGuru Reviewer GitHub Action on this repo
 
