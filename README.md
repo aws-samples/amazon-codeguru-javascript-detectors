@@ -6,6 +6,8 @@ CodeGuru Reviewer finds defects in Java, Python, and JavaScript code. For more i
 
 This repo demonstrates some of CodeGuru Reviewer's JavaScript detectors. For more descriptions of each detector, see our [Detector Library](https://docs.aws.amazon.com/codeguru/detector-library/index.html). You can also see the code example repos for [Java](https://github.com/aws-samples/amazon-codeguru-reviewer-java-detectors) and [Python](https://github.com/aws-samples/amazon-codeguru-reviewer-python-detectors).
 
+PLEASE NOTE: This repo is for demonstration purpose only. It is meant to educate people about 'security flaws'. The code examples contain vulnerable code and should not be used for real-word purposes.
+
 ## Try out the CodeGuru Reviewer GitHub Action on this repo
 
 You can use this code repository to try out CodeGuru Reviewer using your AWS credentials.
