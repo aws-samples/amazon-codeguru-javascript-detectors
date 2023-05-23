@@ -29,75 +29,28 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-    - name: Assume IAM role
-      id: assume-iam-role
-      continue-on-error: true
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::343030896481:user/GitHub-CodeGuru-GM-HRMIS
-        aws-region: eu-central-1
-
-    - name: Check out repository
+    - name: Checkout repository
       uses: actions/checkout@v2
-      if: steps.assume-iam-role.outcome == 'success'
       with:
         fetch-depth: 0
 
-#    - name: Create empty directory for build artifacts
-#      run: mkdir -p build/libs
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1  # Region to access CodeGuru 
 
-    - name: Run CodeGuru Reviewer
-      id: analysis
+    # Step 2: Add CodeGuru Reviewer Action
+    - name: CodeGuru Reviewer
       uses: aws-actions/codeguru-reviewer@v1.1
-      if: steps.assume-iam-role.outcome == 'success'
-      continue-on-error: false
       with:
-        s3_bucket: codeguru-reviewer-gm-hrms
-
-    - name: Upload SARIF file to workflow artifacts
-      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-      uses: actions/upload-artifact@v2
-      with:
-        name: codeguru-results.sarif.json
-        path: codeguru-results.sarif.json
-
-    #
-    # Upload the SARIF analysis results to GitHub so that they appear on the GitHub UX.
-    #
-    # Note: This step will fail if your GitHub repo is private (unless you buy GitHub Advanced Security).
-    #
-
-    - name: Upload SARIF file to GitHub Security Scans UX
-      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-      uses: github/codeql-action/upload-sarif@v2
+#        build_path: target # build artifact(s) directory
+        s3_bucket: codeguru-reviewer-gm-hrms  # S3 Bucket with "codeguru-reviewer-*" prefix
+    
+    # Step 3: Upload results into GitHub
+    - name: Upload review result
+      if: ${{ github.event_name != 'push' }}
+      uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: codeguru-results.sarif.json
-
-    #
-    # The following steps are optional.
-    #
-    # Create a sorted summary of recommendations in CSV format (detector,filePath,lineNumber).
-    # We do this because analyzing this repo (by design) produces lots of recommendations!
-    #
-    # This summary omits most of the useful information in the full results: recommendation text,
-    # mitigations, "Learn more" links, etcetera. But its compact format (one line per finding)
-    # makes it useful as an overview, and to compute diffs between two analysis runs.
-    #
-
-#    - name: Save a summary of the results to a file on local disk
-#      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-#      run: |
-#        echo "detector,filePath,lineNumber" > summary-of-results.csv
-#        jq -r '.runs[0].results[] | {ruleId: .ruleId, firstFile: .locations[0].physicalLocation.artifactLocation.uri, firstLine: .locations[0].physicalLocation.region.startLine} | join(",")' \
-#          codeguru-results.sarif.json | sort >> summary-of-results.csv
-#
-#    - name: Upload results summary to workflow artifacts
-#      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: summary-of-results.csv
-#        path: summary-of-results.csv
-#
-#    - name: Print CSV summary of analysis results to the action log
-#      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-#      run: cat summary-of-results.csv
