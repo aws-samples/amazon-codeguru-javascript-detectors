@@ -17,8 +17,8 @@ on:
         description: 'Test scenario tags'
   # GitHub disables any scheduled analyses by default when you fork a repo.
   # Still, please remove these two lines if your fork doesn't need scheduled runs.
-  schedule:
-    - cron: '0 0/6 * * *'
+#  schedule:
+#    - cron: '0 0/6 * * *'
 
 permissions:
   id-token: write
@@ -34,8 +34,8 @@ jobs:
       continue-on-error: true
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::048169001733:role/GuruGitHubCICDRole
-        aws-region: us-west-2
+        role-to-assume: arn:aws:iam::343030896481:user/GitHub-CodeGuru-GM-HRMIS
+        aws-region: eu-central-1
 
     - name: Check out repository
       uses: actions/checkout@v2
@@ -43,8 +43,8 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Create empty directory for build artifacts
-      run: mkdir -p build/libs
+#    - name: Create empty directory for build artifacts
+#      run: mkdir -p build/libs
 
     - name: Run CodeGuru Reviewer
       id: analysis
@@ -52,8 +52,7 @@ jobs:
       if: steps.assume-iam-role.outcome == 'success'
       continue-on-error: false
       with:
-        s3_bucket: codeguru-reviewer-build-artifacts-048169001733-us-west-2
-        build_path: ./build/libs
+        s3_bucket: codeguru-reviewer-gm-hrms
 
     - name: Upload SARIF file to workflow artifacts
       if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
@@ -85,20 +84,20 @@ jobs:
     # makes it useful as an overview, and to compute diffs between two analysis runs.
     #
 
-    - name: Save a summary of the results to a file on local disk
-      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-      run: |
-        echo "detector,filePath,lineNumber" > summary-of-results.csv
-        jq -r '.runs[0].results[] | {ruleId: .ruleId, firstFile: .locations[0].physicalLocation.artifactLocation.uri, firstLine: .locations[0].physicalLocation.region.startLine} | join(",")' \
-          codeguru-results.sarif.json | sort >> summary-of-results.csv
-
-    - name: Upload results summary to workflow artifacts
-      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-      uses: actions/upload-artifact@v2
-      with:
-        name: summary-of-results.csv
-        path: summary-of-results.csv
-
-    - name: Print CSV summary of analysis results to the action log
-      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
-      run: cat summary-of-results.csv
+#    - name: Save a summary of the results to a file on local disk
+#      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
+#      run: |
+#        echo "detector,filePath,lineNumber" > summary-of-results.csv
+#        jq -r '.runs[0].results[] | {ruleId: .ruleId, firstFile: .locations[0].physicalLocation.artifactLocation.uri, firstLine: .locations[0].physicalLocation.region.startLine} | join(",")' \
+#          codeguru-results.sarif.json | sort >> summary-of-results.csv
+#
+#    - name: Upload results summary to workflow artifacts
+#      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: summary-of-results.csv
+#        path: summary-of-results.csv
+#
+#    - name: Print CSV summary of analysis results to the action log
+#      if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
+#      run: cat summary-of-results.csv
