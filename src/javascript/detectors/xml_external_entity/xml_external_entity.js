@@ -9,7 +9,7 @@ var fs = require('fs');
 function xmlExternalEntityNoncompliant() {
     const xml = fs.readFileSync("foo.xml");
     // Noncompliant: sets `noent` to true which enables the parsing of external entities.
-    const xmlDoc = libxmljs.parseXmlS(xml, { noent: true, noblanks: true });
+    const xmlDoc = libxmljs.parseXml(xml, { noent: true, noblanks: true });
 }
 // {/fact}
 
@@ -20,6 +20,6 @@ var fs = require('fs');
 function xmlExternalEntityCompliant() {
     const xml = fs.readFileSync("foo.xml");
     // Compliant: parsing of external entities is disabled by default.
-    const xmlDoc = libxmljs.parseXmlS(xml, { noblanks: true });
+    const xmlDoc = libxmljs.parseXml(xml, { noblanks: true });
 }
 // {/fact}
