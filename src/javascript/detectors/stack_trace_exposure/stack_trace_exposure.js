@@ -9,7 +9,7 @@ var app = express()
 function stackTraceExposureNoncompliant() {
     app.get('www.example.com', (req, res) => {
         try {
-            var test = 10
+            throw new Error('')
         }
         catch (e) {
             var stackTrace = e.stack || e.stacktrace
@@ -27,7 +27,7 @@ var app = express()
 function stackTraceExposureCompliant() {
     app.get('www.example.com', (req, res) => {
         try {
-            var test = 10
+            throw new Error('')
         }
         catch (e) {
             var stackTrace = e.stack || e.stacktrace
