@@ -6,17 +6,14 @@
 // {fact rule=code-injection@v1.0 defects=1}
 var express = require('express')
 var app = express()
-var vm = require('vm')
+var exec = require("child_process")
 function codeInjectionNoncompliant() {
-    app.get('/perform/:action', (req, res) => {
-        const sandbox = {
-            actionToPerform: req.params.action
-        }
-        const code = 'performAction(sandbox.actionToPerform)'
-        vm.createContext(sandbox)
-        // Noncompliant: user-supplied input evaluated as a script.
-        vm.runInContext(code, sandbox)
-        res.send('Action performed successfully!')
+    app.get('/perform/action', (req, res) => {
+        const command = req.query.command
+        // Noncompliant: passing user-supplied parameters directly into the shell command.
+        exec(command, (error, stdout, stderr) => {
+            console.log(stdout)
+        });
     })
 }
 // {/fact}
@@ -25,21 +22,16 @@ function codeInjectionNoncompliant() {
 // {fact rule=code-injection@v1.0 defects=0}
 var express = require('express')
 var app = express()
-var vm = require('vm')
+var exec = require("child_process")
 function codeInjectionCompliant() {
-    app.get('/perform/:action', (req, res) => {
-        const sandbox = {
-            actionToPerform: req.params.action
+    app.get('/perform/action', (req, res) => {
+        const command = req.query.command
+        // Compliant: validating user-supplied command before passing them into the shell command.
+        if ( command.indexOf("rm") == -1 ) {
+            exec(command, (error, stdout, stderr) => {
+                console.log(stdout)
+            });
         }
-        const code = 'performAction(sandbox.actionToPerform)'
-        vm.createContext(sandbox)
-        // Compliant: user-supplied parameter must be in allow-list to be evaluated.
-        if(sandbox.actionToPerform.match(/^pull|fetch|add|commit$/)) {
-            vm.runInContext(code, sandbox)
-            res.send('Action performed successfully!')
-        }
-        else
-            res.send('Invalid action')
     })
 }
 // {/fact}
