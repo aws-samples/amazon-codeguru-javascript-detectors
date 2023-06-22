@@ -10,9 +10,10 @@ var exec = require("child_process")
 function codeInjectionNoncompliant() {
     app.get('/read/logfile', (req, res) => {
         const command = req.query.command
-        const parameters = req.query.parameters
-        // Noncompliant: passing user-supplied parameters into the shell command.
-        exec(command + " " + parameters + " ./logfile.txt" , (error, stdout, stderr) => {
+        const parameter = req.query.parameter
+        const lines = req.query.lines
+        // Noncompliant: passing user-supplied datas into the shell command.
+        exec(command + " " + parameter + " " + lines + " ./logfile.txt" , (error, stdout, stderr) => {
             res.send(stdout)
         })
     })
