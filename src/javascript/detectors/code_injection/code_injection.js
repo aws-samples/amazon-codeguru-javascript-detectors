@@ -8,12 +8,13 @@ var express = require('express')
 var app = express()
 var exec = require("child_process")
 function codeInjectionNoncompliant() {
-    app.get('/perform/action', (req, res) => {
+    app.get('/read/logfile', (req, res) => {
         const command = req.query.command
-        // Noncompliant: passing user-supplied parameters directly into the shell command.
-        exec(command, (error, stdout, stderr) => {
-            console.log(stdout)
-        });
+        const parameters = req.query.parameters
+        // Noncompliant: passing user-supplied parameters into the shell command.
+        exec(command + " " + parameters + " ./logfile.txt" , (error, stdout, stderr) => {
+            res.send(stdout)
+        })
     })
 }
 // {/fact}
@@ -24,13 +25,20 @@ var express = require('express')
 var app = express()
 var exec = require("child_process")
 function codeInjectionCompliant() {
-    app.get('/perform/action', (req, res) => {
+    app.get('/read/logfile', (req, res) => {
         const command = req.query.command
+        const parameters = req.query.parameters
+
+        const allowedList = ['head', 'tail']
+        const allowedParameters = ['-n', '-c']
+
         // Compliant: validating user-supplied command before passing them into the shell command.
-        if ( command.indexOf("rm") == -1 ) {
-            exec(command, (error, stdout, stderr) => {
-                console.log(stdout)
-            });
+        if ( allowedList.indexOf(command) != -1 && allowedParameters.indexOf(parameters) != -1) {
+            exec(command + " " + parameters + " ./logfile.txt" , (error, stdout, stderr) => {
+                res.send(stdout)
+            })
+        } else {
+            res.send('Invalid action')
         }
     })
 }
