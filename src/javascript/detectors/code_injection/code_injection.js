@@ -34,7 +34,7 @@ function codeInjectionCompliant() {
         const allowedCommands = ['head', 'tail']
         const allowedParameters = ['-n', '-c']
 
-        // Compliant: validating user-supplied command before passing them into the shell command.
+        // Compliant: validating user-supplied datas before passing them into the shell command.
         if ( allowedCommands.indexOf(command) != -1 && allowedParameters.indexOf(parameter) != -1 && !isNaN(lines)) {
             exec(command + " " + parameter + " " + lines + " ./logfile.txt" , (error, stdout, stderr) => {
                 res.send(stdout)
