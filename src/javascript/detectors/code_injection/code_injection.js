@@ -27,17 +27,19 @@ var exec = require("child_process")
 function codeInjectionCompliant() {
     app.get('/read/logfile', (req, res) => {
         const command = req.query.command
-        const parameters = req.query.parameters
+        const parameter = req.query.parameter
+        const lines = req.query.lines
 
-        const allowedList = ['head', 'tail']
+        const allowedCommands = ['head', 'tail']
         const allowedParameters = ['-n', '-c']
 
         // Compliant: validating user-supplied command before passing them into the shell command.
-        if ( allowedList.indexOf(command) != -1 && allowedParameters.indexOf(parameters) != -1) {
-            exec(command + " " + parameters + " ./logfile.txt" , (error, stdout, stderr) => {
+        if ( allowedCommands.indexOf(command) != -1 && allowedParameters.indexOf(parameter) != -1 && !isNaN(lines)) {
+            exec(command + " " + parameter + " " + lines + " ./logfile.txt" , (error, stdout, stderr) => {
                 res.send(stdout)
             })
-        } else {
+        }
+        else {
             res.send('Invalid action')
         }
     })
