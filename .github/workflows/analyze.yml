@@ -17,8 +17,8 @@ on:
         description: 'Test scenario tags'
   # GitHub disables any scheduled analyses by default when you fork a repo.
   # Still, please remove these two lines if your fork doesn't need scheduled runs.
-  schedule:
-    - cron: '0 0/6 * * *'
+#  schedule:
+#    - cron: '0 0/6 * * *'
 
 permissions:
   id-token: write
