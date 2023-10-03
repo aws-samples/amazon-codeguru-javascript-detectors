@@ -4,11 +4,14 @@
  */
 
 // {fact rule=insufficiently-protected-credentials@v1.0 defects=1}
+var express = require('express')
+var loginController = express.Router()
 var jwt = require("jsonwebtoken")
 function insufficientlyProtectedCredentialsNoncompliant() {
-    User.findOne({ email: req.body.email }, function (e, user) {
-        // Noncompliant: object is passed directly to `jsonwebtoken.sign()`.
-        var token = jwt.sign(user, key, { expiresIn: 60 * 60 * 10 })
+    loginController.post('/', async (req, res, next) => {
+        var email = req.body.email
+        // Noncompliant: JWT is not signed with a strong cipher algorithm.
+        var token = jwt.sign(email, process.env.JWT_SECRET, { algorithm: 'none' })
         return token
     })
 }
@@ -16,11 +19,14 @@ function insufficientlyProtectedCredentialsNoncompliant() {
 
 
 // {fact rule=insufficiently-protected-credentials@v1.0 defects=0}
+var express = require('express')
+var loginController = express.Router()
 var jwt = require("jsonwebtoken")
 function insufficientlyProtectedCredentialsCompliant() {
-    User.findOne({ name: req.body.name }, function (err, user) {
-        // Compliant: validated object before passing into `jsonwebtoken.sign()`.
-        var token = jwt.sign(name , key, { expiresIn: 60 * 60 * 10 })
+    loginController.post('/', async (req, res, next) => {
+        var email = req.body.email
+        // Compliant: JWT is signed with a strong cipher algorithm.
+        var token = jwt.sign(email, process.env.JWT_SECRET, { algorithm: 'RS256' })
         return token
     })
 }
