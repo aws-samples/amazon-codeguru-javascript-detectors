@@ -6,17 +6,16 @@
 // {fact rule=code-injection@v1.0 defects=1}
 var express = require('express')
 var app = express()
-var vm = require('vm')
+var exec = require("child_process")
 function codeInjectionNoncompliant() {
-    app.get('/perform/:action', (req, res) => {
-        const sandbox = {
-            actionToPerform: req.params.action
-        }
-        const code = 'performAction(sandbox.actionToPerform)'
-        vm.createContext(sandbox)
-        // Noncompliant: user-supplied input evaluated as a script.
-        vm.runInContext(code, sandbox)
-        res.send('Action performed successfully!')
+    app.get('/read/logfile', (req, res) => {
+        const command = req.query.command
+        const parameter = req.query.parameter
+        const lines = req.query.lines
+        // Noncompliant: passing user-supplied datas into the shell command.
+        exec(command + " " + parameter + " " + lines + " ./logfile.txt" , (error, stdout, stderr) => {
+            res.send(stdout)
+        })
     })
 }
 // {/fact}
@@ -25,21 +24,25 @@ function codeInjectionNoncompliant() {
 // {fact rule=code-injection@v1.0 defects=0}
 var express = require('express')
 var app = express()
-var vm = require('vm')
+var exec = require("child_process")
 function codeInjectionCompliant() {
-    app.get('/perform/:action', (req, res) => {
-        const sandbox = {
-            actionToPerform: req.params.action
+    app.get('/read/logfile', (req, res) => {
+        const command = req.query.command
+        const parameter = req.query.parameter
+        const lines = req.query.lines
+
+        const allowedCommands = ['head', 'tail']
+        const allowedParameters = ['-n', '-c']
+
+        // Compliant: validating user-supplied datas before passing them into the shell command.
+        if ( allowedCommands.indexOf(command) != -1 && allowedParameters.indexOf(parameter) != -1 && !isNaN(lines)) {
+            exec(command + " " + parameter + " " + lines + " ./logfile.txt" , (error, stdout, stderr) => {
+                res.send(stdout)
+            })
         }
-        const code = 'performAction(sandbox.actionToPerform)'
-        vm.createContext(sandbox)
-        // Compliant: user-supplied parameter must be in allow-list to be evaluated.
-        if(sandbox.actionToPerform.match(/^pull|fetch|add|commit$/)) {
-            vm.runInContext(code, sandbox)
-            res.send('Action performed successfully!')
-        }
-        else
+        else {
             res.send('Invalid action')
+        }
     })
 }
 // {/fact}
